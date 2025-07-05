@@ -1,1 +1,35 @@
-<p>header works!</p>
+<header class="p-3 w-full fixed top-0 z-50 bg-gradient-to-r from-primary to-black">
+    <div class="flex justify-around">
+        <nav class="flex gap-3 my-2 uppercase text-lg text-white">
+            <a href="/">Home</a>
+            <a href="/members">Members</a>
+            <a href="/members">Matches</a>
+            <a href="/members">Messages</a>
+        </nav>
+        
+        
+        <div class="flex align-middle ml-auto gap-3">
+            
+            @if (currentUser() != null) {
+                <div class="dropdown dropdown-end">
+                    
+                    <div tabindex="0" role="button"  class="cursor-pointer">
+                        <img src="/user.png" alt="user" class="w-8 h-8 rounded-full">
+                        <span>{{currentUser()?.displayName}}</span>
+                    </div>
+                    <ul tabindex="0" class="dropdown-content menu">
+                        <li><button class="btn" (click)="logout()">Logout</button></li>
+                    </ul>
+                    
+                </div>
+            }
+            @else {
+                <form (ngSubmit)="login()" class="flex items-center gap-3">
+                    <input name="email" [(ngModel)]="creds.email" type="text" class="input" placeholder="Email">
+                    <input name="password" [(ngModel)]="creds.password" type="password" class="input" placeholder="Password">
+                    <button class="btn" type="submit">Login</button>
+                </form>
+            }
+        </div>
+    </div>
+</header>

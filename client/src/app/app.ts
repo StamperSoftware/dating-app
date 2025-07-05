@@ -1,25 +1,28 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MemberService } from "./core/services/member";
-import { Member } from "./models";
+import { Header } from "./ui/header/header";
+import { Footer } from "./ui/footer/footer";
+import { AccountService } from "./core/services/account.service";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit {
   
-  memberService = inject(MemberService);
-  protected members = signal<Member[]>([]);
-  
+  private accountService = inject(AccountService);
   
   ngOnInit(): void {
-    this.memberService.getMember("9b1d3431-83e9-4ca5-b7cc-8d8113b07ba4").subscribe();
-    this.memberService.getMembers().subscribe({
-      next: response => this.members.set(response) 
-    });
+    this.setCurrentUser();
+  }
+  
+  setCurrentUser(){
+    const userString = localStorage.getItem('user');
+    if (!userString) return;
+    const user = JSON.parse(userString);
+    this.accountService.currentUser.set(user);
   }
   
 }
