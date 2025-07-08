@@ -2,3 +2,4 @@
 export type {User} from './user'
 export type {LoginDto} from './loginDto'
 export type {RegisterDto} from './registerDto'
+export type {ApiError} from './error';

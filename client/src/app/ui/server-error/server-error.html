@@ -1,0 +1,13 @@
+<div class="card bg-base-100 gap-3 w-4xl mx-auto flex flex-col items-center rounded-xl shadow-xl p-10">
+    <h4>Server Error. Please try again later</h4>
+    <h5>{{error.message}}</h5>
+    <button class="btn btn-primary" (click)="toggleShowDetails()">Show/Hide Details</button>
+    
+    @if (showDetails){
+        <div>
+            {{error.details}}
+        </div>
+    }
+    
+    
+</div>

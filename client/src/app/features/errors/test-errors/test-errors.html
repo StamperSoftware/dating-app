@@ -1,0 +1,17 @@
+<div>
+    <button class="btn btn-neutral" (click)="getServerError()">Get Server Error</button>
+    <button class="btn btn-neutral" (click)="getBadRequestError()">Get Bad Request Error</button>
+    <button class="btn btn-neutral" (click)="getNotFoundError()">Get Not Found Error</button>
+    <button class="btn btn-neutral" (click)="getUnauthorizedError()">Get Unauthorized Error</button>
+    <button class="btn btn-neutral" (click)="getValidationError()">Get Validation Error</button>
+</div>
+
+@if(validationErrors().length > 0){
+    <div class="card bg-base-200 flex mt-5 rounded-2xl w-1/2 p-3 mx-auto">
+        <ul class="flex flex-col text-red-600 my-2">
+            @for(error of validationErrors(); track $index) {
+                <li>{{error}}</li>
+            }
+        </ul>
+    </div>
+}
