@@ -1,12 +1,14 @@
-<header class="p-3 w-full fixed top-0 z-50 bg-gradient-to-r from-primary to-black">
+<header class="p-3 w-full bg-gradient-to-r from-primary to-black">
     <div class="flex justify-around">
-        <nav class="flex gap-3 my-2 uppercase text-lg text-white">
-            <a href="/">Home</a>
-            <a href="/members">Members</a>
-            <a href="/members">Matches</a>
-            <a href="/members">Messages</a>
+        <nav class="flex gap-3 my-2 uppercase text-lg">
+            <a routerLink="/" routerLinkActive="text-accent" [routerLinkActiveOptions]="{exact:true}" >Home</a>
+            
+            @if (accountService.currentUser()){
+                <a routerLink="/members" routerLinkActive="text-accent">Members</a>
+                <a routerLink="/matches" routerLinkActive="text-accent">Matches</a>
+                <a routerLink="/messages" routerLinkActive="text-accent">Messages</a>
+            }
         </nav>
-        
         
         <div class="flex align-middle ml-auto gap-3">
             
@@ -14,7 +16,7 @@
                 <div class="dropdown dropdown-end">
                     
                     <div tabindex="0" role="button"  class="cursor-pointer">
-                        <img src="/user.png" alt="user" class="w-8 h-8 rounded-full">
+                        <img ngSrc="/user.png" alt="user" class="w-8 h-8 rounded-full" height="450" width="450">
                         <span>{{currentUser()?.displayName}}</span>
                     </div>
                     <ul tabindex="0" class="dropdown-content menu">

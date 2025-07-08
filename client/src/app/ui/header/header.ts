@@ -2,27 +2,42 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { AccountService } from "../../core/services/account.service";
 import { LoginDto } from "../../models";
+import { Router, RouterLink, RouterLinkActive } from "@angular/router";
+import { NgOptimizedImage } from "@angular/common";
+import { ToastService } from "../../core/services/toast.service";
 
 @Component({
   selector: 'app-header',
   imports: [
-    FormsModule
+    FormsModule,
+    RouterLink,
+    RouterLinkActive,
+    NgOptimizedImage
   ],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
 export class Header {
   
+  protected accountService = inject(AccountService);
+  private router = inject(Router);
+  private toastService = inject(ToastService)
+  
   protected creds:LoginDto = { email:"",password:""}
-  private accountService = inject(AccountService);
   protected currentUser = this.accountService.currentUser;
   
   login(){
-    this.accountService.login(this.creds).subscribe();
+    this.accountService.login(this.creds).subscribe({
+      next:()=>{this.router.navigateByUrl('/');},
+      error:(err)=>{this.toastService.error(err.error);},
+    });
   }
   
   logout(){
     this.creds = {email: "", password: ""}
-    this.accountService.logout().subscribe();
+    this.accountService.logout().subscribe({
+      next:()=>{this.router.navigateByUrl('/')},
+      error:(err)=>{this.toastService.error(err.error);},
+    });
   }
 }
