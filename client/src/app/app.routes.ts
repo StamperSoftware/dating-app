@@ -8,6 +8,10 @@ import { authGuard } from "./core/guards/auth-guard";
 import { TestErrors } from "./features/errors/test-errors/test-errors";
 import { NotFound } from "./ui/not-found/not-found";
 import { ServerError } from "./ui/server-error/server-error";
+import { MemberProfile } from "./features/members/profile/profile";
+import { MemberPhotos } from "./features/members/photos/photos";
+import { MemberMessages } from "./features/members/messages/messages";
+import { memberResolver } from "./core/resolvers/member-resolver";
 
 export const routes: Routes = [
     {path:"", component:Home},
@@ -19,7 +23,18 @@ export const routes: Routes = [
         canActivate:[authGuard],
         children:[
             {path:"members", component:MemberList},
-            {path:"member/:id", component:MemberDetail},
+            {
+                path:"members/:id", 
+                resolve:{member:memberResolver},
+                runGuardsAndResolvers:"always",
+                component:MemberDetail,
+                children:[
+                    {path:"", redirectTo:'profile', pathMatch:"full"},    
+                    {path:"profile", component:MemberProfile, pathMatch:"full", title:"Profile"},    
+                    {path:"photos", component:MemberPhotos, pathMatch:"full", title:"Photos"},    
+                    {path:"messages", component:MemberMessages, pathMatch:"full", title:"Messages"},    
+                ]               
+            },
             {path:"matches", component:Matches, canActivate:[authGuard]},
             {path:"messages", component:Messages},
         ]

@@ -1,23 +1,32 @@
-<header class="p-3 w-full bg-gradient-to-r from-primary to-black">
+<header class="p-3 w-full bg-gradient-to-r from-base-100 to-base-300">
     <div class="flex justify-around">
-        <nav class="flex gap-3 my-2 uppercase text-lg">
+        <nav class="flex gap-3 my-2 uppercase text-lg items-center font-semibold">
             <a routerLink="/" routerLinkActive="text-accent" [routerLinkActiveOptions]="{exact:true}" >Home</a>
             
             @if (accountService.currentUser()){
-                <a routerLink="/members" routerLinkActive="text-accent">Members</a>
+                <a routerLink="/members" routerLinkActive="text-accent" [routerLinkActiveOptions]="{exact:true}" >Members</a>
                 <a routerLink="/matches" routerLinkActive="text-accent">Matches</a>
                 <a routerLink="/messages" routerLinkActive="text-accent">Messages</a>
             }
         </nav>
         
         <div class="flex align-middle ml-auto gap-3">
-            
-            @if (currentUser() != null) {
+            <div class="dropdown dropdown-end mr-1">
+                <button tabindex="0" class="btn m-1 flex flex-col justify-center align-middle cursor-pointer uppercase text-xs">
+                    {{selectedTheme()}}
+                </button>
+                <ul tabindex="0" class="dropdown-content bg-base-300 cursor-pointer p-3">
+                    @for (theme of themes;track $index) {
+                        <li (click)="handleSelectedTheme(theme)" class="hover:bg-base-100"><a>{{theme}}</a></li>
+                    }
+                </ul>
+            </div>
+            @if (currentUser(); as user) {
                 <div class="dropdown dropdown-end">
                     
                     <div tabindex="0" role="button"  class="cursor-pointer">
-                        <img ngSrc="{{currentUser()?.imageUrl}}" alt="user" class="w-8 h-8 rounded-full" height="450" width="450">
-                        <span>{{currentUser()?.displayName}}</span>
+                        <img ngSrc="{{user.imageUrl}}" alt="user" class="w-8 h-8 rounded-full" height="450" width="450">
+                        <span>{{user.displayName}}</span>
                     </div>
                     <ul tabindex="0" class="dropdown-content menu">
                         <li><button class="btn" (click)="logout()">Logout</button></li>

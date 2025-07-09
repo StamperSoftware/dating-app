@@ -1,10 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { AccountService } from "../../core/services/account.service";
 import { LoginDto } from "../../models";
 import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { NgOptimizedImage } from "@angular/common";
 import { ToastService } from "../../core/services/toast.service";
+import { themes } from '../../shared/theme';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,11 @@ import { ToastService } from "../../core/services/toast.service";
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header {
+export class Header implements OnInit {
+  
+  ngOnInit(): void {
+    document.documentElement.setAttribute('data-theme', this.selectedTheme())
+  }
   
   protected accountService = inject(AccountService);
   private router = inject(Router);
@@ -25,6 +30,15 @@ export class Header {
   
   protected creds:LoginDto = { email:"",password:""}
   protected currentUser = this.accountService.currentUser;
+  protected selectedTheme = signal<string>(localStorage.getItem('theme') || "dark");
+  
+  handleSelectedTheme(theme:string) {
+    this.selectedTheme.set(theme);
+    localStorage.setItem("theme",theme);
+    document.documentElement.setAttribute("data-theme", theme);
+    const elem = document.activeElement as HTMLDivElement;
+    elem?.blur();
+  }  
   
   login(){
     this.accountService.login(this.creds).subscribe({
@@ -40,4 +54,6 @@ export class Header {
       error:(err)=>{this.toastService.error(err.error);},
     });
   }
+
+  protected readonly themes = themes;
 }

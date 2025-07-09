@@ -1,1 +1,5 @@
-<p>list works!</p>
+<div class="grid grid-cols-5 gap-6 p-5">
+    @for (member of members$ | async; track member.id) {
+        <app-member-card [member]="member"/>
+    }
+</div>

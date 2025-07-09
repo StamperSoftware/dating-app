@@ -2,13 +2,14 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { LoginDto, RegisterDto, User } from "../../models";
 import { tap } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   private http = inject(HttpClient);
-  private url = "https://localhost:5001/api/accounts"
+  private url = `${environment.apiUrl}/accounts`
   
   currentUser = signal<User|null>(null);
   

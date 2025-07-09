@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../../environments/environment";
 
 @Component({
   selector: 'app-test-errors',
@@ -8,10 +9,11 @@ import { HttpClient } from "@angular/common/http";
   styleUrl: './test-errors.css'
 })
 export class TestErrors {
-  private http = inject(HttpClient);
-  url = 'https://localhost:5001/api/errors'
-  validationErrors = signal<string[]>([]);
   
+  private http = inject(HttpClient);
+  url = `${environment.apiUrl}/errors`;
+  accountsUrl = `${environment.apiUrl}/accounts`
+  validationErrors = signal<string[]>([]);
   
   getNotFoundError(){
     return this.http.get(`${this.url}/not-found`).subscribe({
@@ -38,7 +40,7 @@ export class TestErrors {
     })
   }
   getValidationError(){
-    return this.http.post(`https://localhost:5001/api/accounts/register`, {}).subscribe({
+    return this.http.post(`${this.accountsUrl}/register`, {}).subscribe({
       next:()=>{},
       error:(err) => {this.validationErrors.set(err) },
     })

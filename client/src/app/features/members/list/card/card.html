@@ -1,0 +1,12 @@
+@if (member(); as member){
+    <div class="card cursor-pointer transition-all duration-300 ease-in-out transform hover:-translate-y-2" routerLink="{{member.id}}">
+        <img src="{{member.imageUrl || `/user.png`}}" alt="user image" class="rounded-lg" >
+        <div class="card-actions  z-50 absolute bottom-0 w-full px-3 py-1 rounded-b-lg bg-gradient-to-t from-base-300 via-base-200/55 to-base-100/20">
+            <div class="flex flex-col">
+                <span class="font-semibold">{{member.displayName}}, {{member.dateOfBirth | age}}</span>
+                <span class="text-sm">{{member.city}}</span>
+            </div>
+        </div>
+    </div>
+}
+
