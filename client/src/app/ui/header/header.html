@@ -10,6 +10,10 @@
             }
         </nav>
         
+        @if (loadingService.requestCount() > 0){
+            <span class="loading loading-spinner text-accent"></span>
+        } 
+        
         <div class="flex align-middle ml-auto gap-3">
             <div class="dropdown dropdown-end mr-1">
                 <button tabindex="0" class="btn m-1 flex flex-col justify-center align-middle cursor-pointer uppercase text-xs">
@@ -29,6 +33,7 @@
                         <span>{{user.displayName}}</span>
                     </div>
                     <ul tabindex="0" class="dropdown-content menu">
+                        <li><button class="btn" routerLink="/members/{{user.id}}/profile">Edit Profile</button></li>
                         <li><button class="btn" (click)="logout()">Logout</button></li>
                     </ul>
                     

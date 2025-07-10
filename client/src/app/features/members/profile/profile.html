@@ -1,13 +1,43 @@
 <div>
-    @if (member(); as member){
+    @if (memberService.member(); as member){
         <div class="flex flex-col gap-3">
             <dl>
-                <dt>Member Since:</dt><dd>{{member.created | date}}</dd>
-                <dt>Last Active:</dt><dd>{{member.lastActive | date:'short'}}</dd>
+                <dt>Member Since:</dt><dd>{{member.created | date:'dd MMM yyyy'}}</dd>
+                <dt>Last Active:</dt><dd>{{member.lastActive | date:'dd MMM yyyy h:mm a'}}</dd>
             </dl>
             
             <h3 class="text-lg font-semibold text-primary">About {{member.displayName}}</h3>
-            <div>{{member.description}}</div>       
+            @if (memberService.editMode()) {
+                <form #editForm="ngForm" (ngSubmit)="updateProfile()" class="flex flex-col w-full gap-4">
+                    <div>
+                        <label class="floating-label" for="display-name">
+                            <span>Display Name</span>
+                            <input class="input w-full" placeholder="Display Name" id="display-name" type="text" name="displayName" [(ngModel)]="updateMemberDto.displayName">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="floating-label" for="city">
+                            <span>City</span>
+                            <input class="input w-full" placeholder="City" id="city" type="text" name="city" [(ngModel)]="updateMemberDto.city">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="floating-label" for="country">
+                            <span>Country</span>
+                            <input class="input w-full" placeholder="Country" id="country" type="text" name="country" [(ngModel)]="updateMemberDto.country">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="floating-label" for="description">
+                            <span>Description</span>
+                            <textarea class="textarea w-full" id="description" type="text" placeholder="Description" name="description" [(ngModel)]="updateMemberDto.description"></textarea>
+                        </label>
+                    </div>
+                    <button [disabled]="!editForm.dirty"  type="submit" class="self-end btn btn-success">Submit</button>
+                </form>
+            } @else {
+                <div>{{member.description}}</div>       
+            }
         </div>
     }
 </div>

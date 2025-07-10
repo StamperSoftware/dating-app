@@ -1,5 +1,8 @@
-﻿using API.Data;
+﻿using System.Security.Claims;
+using API.Data;
+using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,5 +36,30 @@ public class MembersController(IMemberRepository repo):BaseController
         var photos = await repo.GetMemberPhotosAsync(memberId);
         return Ok(photos);
     }
+
+    [HttpPut]
+    public async Task<ActionResult> UpdateMember(UpdateMemberDto updateMemberDto)
+    {
+
+        var memberId = User.GetMemberId();
+        
+        var member = await repo.GetDetailedMemberAsync(memberId);
+        if (member == null) return BadRequest("Could not find member");
+
+        member.DisplayName = updateMemberDto.DisplayName ?? member.DisplayName;
+        member.Description = updateMemberDto.Description ?? member.Description;
+        member.City = updateMemberDto.City ?? member.City;
+        member.Country = updateMemberDto.Country ?? member.Country;
+
+        member.User.DisplayName = member.DisplayName;
+        
+        //repo.Update(member);
+
+        if (await repo.SaveAllAsync()) return NoContent();
+        
+        return BadRequest("Failed to update member");
+    }
+    
+    
 }
 

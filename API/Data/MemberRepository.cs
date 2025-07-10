@@ -28,8 +28,14 @@ public class MemberRepository(AppDbContext context):IMemberRepository
         return await context.Members.Where(m => m.Id == memberId).SelectMany(m => m.Photos).ToListAsync();
     }
 
-    public async Task<Member?> GetMemberAsync(string? id)
+    public async Task<Member?> GetMemberAsync(string id)
     {
         return await context.Members.FindAsync(id);
+    }
+    public async Task<Member?> GetDetailedMemberAsync(string id)
+    {
+        return await context.Members
+            .Include(m => m.User)
+            .SingleOrDefaultAsync(m => m.Id == id);
     }
 }

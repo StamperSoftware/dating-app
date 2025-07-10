@@ -6,6 +6,7 @@ import { Router, RouterLink, RouterLinkActive } from "@angular/router";
 import { NgOptimizedImage } from "@angular/common";
 import { ToastService } from "../../core/services/toast.service";
 import { themes } from '../../shared/theme';
+import { LoadingService } from "../../core/services/loading.service";
 
 @Component({
   selector: 'app-header',
@@ -20,17 +21,20 @@ import { themes } from '../../shared/theme';
 })
 export class Header implements OnInit {
   
-  ngOnInit(): void {
-    document.documentElement.setAttribute('data-theme', this.selectedTheme())
-  }
   
-  protected accountService = inject(AccountService);
   private router = inject(Router);
   private toastService = inject(ToastService)
   
   protected creds:LoginDto = { email:"",password:""}
+  protected accountService = inject(AccountService);
   protected currentUser = this.accountService.currentUser;
   protected selectedTheme = signal<string>(localStorage.getItem('theme') || "dark");
+  protected loadingService = inject(LoadingService);
+  
+  
+  ngOnInit(): void {
+    document.documentElement.setAttribute('data-theme', this.selectedTheme())
+  }
   
   handleSelectedTheme(theme:string) {
     this.selectedTheme.set(theme);

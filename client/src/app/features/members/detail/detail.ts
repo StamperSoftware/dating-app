@@ -1,8 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { filter} from "rxjs";
 import { Member } from "../../../models";
 import { AgePipe } from "../../../core/pipes/age-pipe";
+import { AccountService } from "../../../core/services/account.service";
+import { MemberService } from "../../../core/services/member.service";
 
 @Component({
   selector: 'app-member-detail',
@@ -14,16 +16,17 @@ export class MemberDetail implements OnInit {
   
     private route = inject(ActivatedRoute);
     private router = inject(Router);
-    protected title = signal<string|undefined>('Profile');
-    protected member = signal<Member|undefined>(undefined);
+    private accountService = inject(AccountService);
     
+    memberService = inject(MemberService);
+    protected title = signal<string|undefined>('Profile');
+    protected isCurrentUser = computed(()=>{
+        return this.accountService.currentUser()?.id === this.route.snapshot.paramMap.get("id");
+    });
   
     ngOnInit(): void {
         
         this.title.set(this.route.firstChild?.snapshot?.title);
-        this.route.data.subscribe({
-            next: data => this.member.set(data['member'])
-        })
         
         this.router.events.pipe(filter(ev => ev instanceof NavigationEnd)).subscribe({
             next:()=> {
