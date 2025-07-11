@@ -22,13 +22,27 @@ export class MemberService {
   getMembers(){
     return this.http.get<Member[]>(`${this.url}`);
   }
+
+  updateMember(updateMember:UpdateMemberDto){
+    return this.http.put(`${this.url}`, updateMember);
+  }
   
   getPhotos(memberId:string){
     return this.http.get<Photo[]>(`${this.url}/${memberId}/photos`);
   }
-
-  updateMember(updateMember:UpdateMemberDto){
-    return this.http.put(`${this.url}`, updateMember);
+  
+  uploadPhoto(memberId:string, file:File){
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<Photo>(`${this.url}/${memberId}/photos`, formData);
+  }
+  
+  setMainPhoto(memberId:string, photoId:string){
+    return this.http.put(`${this.url}/${memberId}/photos/main/${photoId}`, {});
+  }
+  
+  deletePhoto(memberId:string, photoId:string){
+    return this.http.delete(`${this.url}/${memberId}/photos/${photoId}`);
   }
   
 }

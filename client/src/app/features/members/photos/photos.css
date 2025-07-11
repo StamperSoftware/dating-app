@@ -1,0 +1,7 @@
+#star-icon {
+    color:yellow;
+}
+
+#star-icon:hover{
+    transform: scale(2.0);
+}

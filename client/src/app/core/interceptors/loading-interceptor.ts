@@ -17,7 +17,6 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   loadingService.loading();
   
   return next(req).pipe(
-      delay(500),
       tap(resp => cache.set(req.url, resp)),
       finalize(()=>{loadingService.idle();}),
   )

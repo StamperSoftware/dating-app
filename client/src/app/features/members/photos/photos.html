@@ -1,17 +1,35 @@
 <div class="">
-        
-    @if (photos$ | async; as photos ) {
-        
-        @if (photos.length){
-            <div class="grid grid-cols-4 auto-rows-min gap-3 p-5 h-[65vh] overflow-auto">
-                @for(photo of photos; track photo.id) {
-                    <img src="{{photo.url}}" alt="member photo" class="w-full rounded-lg">
-                }
-            </div>
-        } @else {
+    
+    @if (!memberService.editMode()){
+        @if (photos(); as photos ) {
             
+            @if (photos.length){
+                <div class="grid grid-cols-4 auto-rows-min gap-3 p-5 h-[65vh] overflow-auto">
+                    @for(photo of photos; track photo.id) {
+                        <div class="relative">
+                            <img src="{{photo.url}}" alt="member photo" class="w-full rounded-lg">
+                            @if (photo.url !== memberService.member()?.imageUrl && accountService.currentUser()?.id === memberService.member()?.id) {
+                                <div class="action-container z-1 absolute top-1 right-1 ">
+                                    <button class="cursor-pointer" title='Set Main Photo' (click)="setMainPhoto(photo)">
+                                        <fa-icon id="star-icon" class="hover:text-2xl" [icon]="faStar"/>
+                                    </button>
+                                    <button class="cursor-pointer" title='Delete Photo' (click)="deletePhoto(photo)">
+                                        <fa-icon id="delete-icon" class="hover:text-2xl" [icon]="faTrash"/>
+                                    </button>
+                                    
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            } @else {
+                <div><p class="text-center text-gray-500">No Photos</p></div>
+            }
+             
         }
-         
+    } @else{
+        <app-image-upload (outputFile)="handleUploadImage($event)" [loading]="loading()"/>
     }
+        
 </div>
 
