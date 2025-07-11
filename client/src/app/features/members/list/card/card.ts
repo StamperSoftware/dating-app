@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
 import { Member } from "../../../../models";
-import { NgOptimizedImage } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { AgePipe } from "../../../../core/pipes/age-pipe";
 
@@ -15,5 +14,4 @@ import { AgePipe } from "../../../../core/pipes/age-pipe";
 })
 export class MemberCard {
     member = input.required<Member>();
-    
 }

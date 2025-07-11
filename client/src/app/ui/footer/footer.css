@@ -1,0 +1,20 @@
+footer {
+    display: grid;
+    grid-template-columns: 10% auto 10%;
+    align-items: center;
+    padding: .5rem 1rem;
+}
+
+#social-links-container {
+    display: flex;
+    gap:5px;
+    justify-self: start;
+}
+
+#copyright-container {
+    justify-self: center;
+}
+
+a#linkedin-btn, a#github-btn {
+    font-size: 1.5rem;
+}
