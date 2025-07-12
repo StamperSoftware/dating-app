@@ -1,4 +1,4 @@
-<header class="p-3 w-full bg-gradient-to-r from-base-100 to-base-300">
+<header class="p-3 w-full bg-gradient-to-r from-base-200 via-base-300 to-base-200">
     <div class="flex justify-around">
         <nav class="flex gap-3 my-2 uppercase text-lg items-center font-semibold">
             <a routerLink="/" routerLinkActive="text-accent" [routerLinkActiveOptions]="{exact:true}" >Home</a>
@@ -25,7 +25,7 @@
                     }
                 </ul>
             </div>
-            @if (currentUser(); as user) {
+            @if (accountService.currentUser(); as user) {
                 <div class="dropdown dropdown-end">
                     
                     <div tabindex="0" role="button"  class="cursor-pointer">

@@ -26,8 +26,8 @@ export class ToastService {
     const toast = document.createElement('div');
     toast.classList.add('alert', alertClass, 'shadow-lg');
     toast.innerHTML = `
-<span>${message}</span>
-<button class="ml-4 btn btn-sm btn-ghost">x</button>
+  <span class="self-center ">${message}</span>
+  <button class="btn btn-sm btn-ghost self-center justify-self-end ">x</button>
     `;
     
     toast.querySelector('button')?.addEventListener('click', ()=> {
@@ -39,7 +39,7 @@ export class ToastService {
       if(this.container.contains(toast)){
         this.container.removeChild(toast);
       }
-    }, duration);
+    }, 1000000);
   }
     
   success(message:string,duration?:number){

@@ -8,6 +8,7 @@ import { environment } from "../../../environments/environment";
   providedIn: 'root'
 })
 export class AccountService {
+  
   private http = inject(HttpClient);
   private url = `${environment.apiUrl}/accounts`
   
@@ -35,7 +36,6 @@ export class AccountService {
     
     localStorage.setItem("user", JSON.stringify(user));
     this.currentUser.set(user);
-  }
-  
+  }  
 }
 

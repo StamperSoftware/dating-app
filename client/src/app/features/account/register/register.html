@@ -1,37 +1,65 @@
 <div class="card bg-base-100 mx-auto flex flex-col p-7 rounded-lg shadow-lg w-1/4 my-5">
-    <div class="card-title justify-center text-3xl text-primary">Sign Up!</div>
-        
-    <div class="card-body">
-        <form [formGroup]="registerForm" class="flex flex-col gap-4 w-full" (ngSubmit)="register()" >
-
-            <label for="email" class="floating-label">
-                <span>Email</span>
-                <input class="input w-full" name="email" formControlName="email" type="text" placeholder="Email">
-            </label>
-
-            <label for="Display Name" class="floating-label">
-                <span>Display Name</span>
-                <input class="input w-full" name="displayName" formControlName="displayName" type="text" placeholder="Display Name" 
-                       [class.input-error]="registerForm.controls['displayName'].invalid && registerForm.controls['displayName'].touched">
-                @if (registerForm.controls['displayName'].invalid && registerForm.controls['displayName'].touched){
-                    <div class="validation-hint text-error text-xs">Display Name is required</div>
-                }
-            </label>
-
-            <label for="password" class="floating-label">
-                <span>Password</span>
-                <input class="input w-full" name="password" formControlName="password" type="password" placeholder="Password">
-            </label>
-            
-            <label for="confirm-password" class="floating-label">
-                <span>Confirm Password</span>
-                <input class="input w-full" name="confirm-password" formControlName="confirmPassword" type="password" placeholder="Confirm Password">
-            </label>
-            
-            <div class="flex items-center justify-end gap-3">
-                <button class="btn" type="button" (click)="handleCancel.emit(false)">Cancel</button>
-                <button class="btn btn-primary" type="submit" [disabled]="!registerForm.valid">Register</button>
-            </div>
-        </form>
+    
+    <div class="card-title justify-center text-3xl text-primary">
+        Sign Up!
     </div>
+        
+    <ul class="steps">
+        <li class="step step-primary">Account Info</li>
+        <li class="step" [class.step-primary]="currentStep() == 1">User Info</li>
+    </ul>
+    
+    @switch (currentStep()) {
+        @case (0) {
+            <form [formGroup]="registerForm" (ngSubmit)="updateCurrentStep(1)" class="flex flex-col gap-5 w-full card-body steps"  >
+                <app-input name="email" label="Email" formControlName="email"/>
+                <app-input name="displayName" label="Display Name" formControlName="displayName"/>
+                <app-input name="password" type="password" label="Password" formControlName="password"/>
+                <app-input name="confirmPassword" type="password" label="Confirm Password" formControlName="confirmPassword"/>
+                
+                <div class="flex items-center justify-end gap-3">
+                    <button class="btn" type="button" (click)="handleCancel.emit(false)">Cancel</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!registerForm.valid">Continue</button>
+                </div>
+            </form>
+        }
+        @case (1) {
+            <form [formGroup]="profileForm" (ngSubmit)="updateCurrentStep(1)" class="flex flex-col gap-5 w-full card-body steps">
+                
+                <fieldset class="flex items-center gap-5">
+                    <legend class="font-semibold">Gender:</legend>
+                    
+                    <label for="male-gender" class="flex items-center gap-2">
+                        <span>Male</span>
+                        <input class="radio radio-primary" id="male-gender" name="gender" formControlName="gender" type="radio" value="male">
+                    </label>
+                    
+                    <label for="female-gender" class="flex items-center gap-2">
+                        <span>Female</span>
+                        <input class="radio radio-primary" id="female-gender" name="gender" formControlName="gender" type="radio" value="female">
+                    </label>
+                </fieldset>
+                    
+                <app-input name="city" label="City" formControlName="city"/>
+                <app-input name="country" label="Country" formControlName="country"/>
+                <app-input name="dateOfBirth" type="date" label="Date Of Birth" formControlName="dateOfBirth" [maxDate]="getMaxDate()"/>
+
+                <div class="flex items-center justify-end gap-3">
+                    <button class="btn" type="button" (click)="updateCurrentStep(-1)">Go Back</button>
+                    <button class="btn btn-primary" type="submit" [disabled]="!profileForm.valid">Register</button>
+                </div>
+            </form>
+        }
+    }
+
+    @if (validationErrors()) {
+        <div class="mt-5 flex bg-gray-200 rounded-2xl w-1/2 p-3 mx-auto">
+            <ul class="flex flex-col text-error space-y-1">
+                @for (err of validationErrors(); track $index){
+                    <li>{{err}}</li>
+                }
+            </ul>
+        </div>
+    }
+    
 </div>

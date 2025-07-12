@@ -27,7 +27,6 @@ export class Header implements OnInit {
   
   protected creds:LoginDto = { email:"",password:""}
   protected accountService = inject(AccountService);
-  protected currentUser = this.accountService.currentUser;
   protected selectedTheme = signal<string>(localStorage.getItem('theme') || "dark");
   protected loadingService = inject(LoadingService);
   
