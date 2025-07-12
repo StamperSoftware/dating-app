@@ -39,7 +39,7 @@ export class ToastService {
       if(this.container.contains(toast)){
         this.container.removeChild(toast);
       }
-    }, 1000000);
+    }, duration);
   }
     
   success(message:string,duration?:number){
@@ -54,5 +54,4 @@ export class ToastService {
   error(message:string,duration?:number){
     this.createToastElements(message,'alert-error', duration);
   }
-  
 }
