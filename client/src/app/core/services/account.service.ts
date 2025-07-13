@@ -20,7 +20,13 @@ export class AccountService {
   
   logout(){
     this.setCurrentUser(null);
-    return this.http.post(`${this.url}/logout`, {}).pipe(tap(() => this.setCurrentUser(null)));
+    localStorage.removeItem('filters');
+    return this.http.post(`${this.url}/logout`, {}).pipe(
+        tap(() => {
+          localStorage.removeItem('filters');
+          this.setCurrentUser(null);
+        })
+    );
   }
   
   register(registerDto:RegisterDto){

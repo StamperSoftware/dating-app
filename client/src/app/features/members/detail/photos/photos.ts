@@ -1,9 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { MemberService } from "../../../core/services/member.service";
-import { Member, Photo, User } from "../../../models";
+import { MemberService } from "../../../../core/services/member.service";
+import { Member, Photo, User } from "../../../../models";
 import { ActivatedRoute } from "@angular/router";
-import { ImageUpload } from "../../../ui/image-upload/image-upload";
-import { AccountService } from "../../../core/services/account.service";
+import { ImageUpload } from "../../../../ui/image-upload/image-upload";
+import { AccountService } from "../../../../core/services/account.service";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faStar, faTrash } from "@fortawesome/free-solid-svg-icons";
 

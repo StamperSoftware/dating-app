@@ -8,9 +8,9 @@ import { authGuard } from "./core/guards/auth-guard";
 import { TestErrors } from "./features/errors/test-errors/test-errors";
 import { NotFound } from "./ui/not-found/not-found";
 import { ServerError } from "./ui/server-error/server-error";
-import { MemberProfile } from "./features/members/profile/profile";
-import { MemberPhotos } from "./features/members/photos/photos";
-import { MemberMessages } from "./features/members/messages/messages";
+import { MemberProfile } from "./features/members/detail/profile/profile";
+import { MemberPhotos } from "./features/members/detail/photos/photos";
+import { MemberMessages } from "./features/members/detail/messages/messages";
 import { memberResolver } from "./core/resolvers/member-resolver";
 import { preventUnsavedChangesGuard } from "./core/guards/prevent-unsaved-changes-guard";
 

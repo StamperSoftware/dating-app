@@ -1,16 +1,18 @@
 import { Component, HostListener, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { UpdateMemberDto, Member } from '../../../models';
+import { UpdateMemberDto, Member } from '../../../../models';
 import { DatePipe } from "@angular/common";
-import { MemberService } from "../../../core/services/member.service";
+import { MemberService } from "../../../../core/services/member.service";
 import { FormsModule, NgForm } from "@angular/forms";
-import { AccountService } from "../../../core/services/account.service";
+import { AccountService } from "../../../../core/services/account.service";
+import { DateAgoPipe } from "../../../../core/pipes/date-ago-pipe";
 
 @Component({
   selector: 'app-member-profile',
     imports: [
         DatePipe,
-        FormsModule
+        FormsModule,
+        DateAgoPipe
     ],
   templateUrl: './profile.html',
   styleUrl: './profile.css'

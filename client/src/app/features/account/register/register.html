@@ -1,4 +1,4 @@
-<div class="card bg-base-100 mx-auto flex flex-col p-7 rounded-lg shadow-lg w-1/4 my-5">
+<div class="card bg-base-100 mx-auto flex flex-col p-7 rounded-lg shadow-lg w-1/4">
     
     <div class="card-title justify-center text-3xl text-primary">
         Sign Up!
@@ -52,7 +52,7 @@
         }
     }
 
-    @if (validationErrors()) {
+    @if (validationErrors().length) {
         <div class="mt-5 flex bg-gray-200 rounded-2xl w-1/2 p-3 mx-auto">
             <ul class="flex flex-col text-error space-y-1">
                 @for (err of validationErrors(); track $index){

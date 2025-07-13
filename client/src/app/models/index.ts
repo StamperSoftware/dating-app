@@ -5,3 +5,5 @@ export type {RegisterDto} from './registerDto'
 export type {ApiError} from './error';
 export type {Photo} from './photo';
 export type {UpdateMemberDto} from './updateMemberDto';
+export type {PaginatedResults, PaginationParams, PaginationMetadata} from './pagination';
+export type {Gender} from './gender'

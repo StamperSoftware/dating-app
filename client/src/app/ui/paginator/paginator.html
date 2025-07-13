@@ -1,0 +1,20 @@
+<div class="flex items-center w-full gap-3">
+    <span>Items per page:</span>
+    <select name="pageSize" id="pageSize" class="select w-24" (change)="onPageChange(undefined, $event.target)">
+        @for (size of pageSizeOptions(); track size) {
+            <option [value]="size" [selected]="size === pageSize()" >{{size}}</option>
+        }
+    </select>
+
+
+    <div class="flex items-center gap-2">
+        <button class="btn btn-circle btn-ghost" [class.hidden]="currentPage()===0"  [disabled]="currentPage()===0" (click)="onPageChange(currentPage()-1)">&larr;</button>
+        
+        <div class="text-sm">
+            {{currentPage() * pageSize() + 1}} - {{lastItemIndex()}} of {{totalCount()}}
+        </div>
+        
+        <button class="btn btn-circle btn-ghost" [class.hidden]="totalCount()-((currentPage()+1)*pageSize()) <= 0" [disabled]="totalCount()-((currentPage()+1)*pageSize()) <= 0" (click)="onPageChange(currentPage()+1)">&rarr;</button>
+    </div>
+    
+</div>
