@@ -29,7 +29,12 @@ public class Member
     [JsonIgnore]
     public IList<MemberLike> LikedMembers { get; set; } = [];
 
-
+    [JsonIgnore]
+    public IList<Message> MessagesSent { get; set; } = [];
+    
+    [JsonIgnore]
+    public IList<Message> MessagesReceived { get; set; } = [];
+    
 
 }
     
