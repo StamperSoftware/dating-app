@@ -1,9 +1,8 @@
 import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MemberService } from "../../../core/services/member.service";
-import { Member, PaginationMetadata } from "../../../models";
+import { Member, PaginationMetadata, MemberSearchParams } from "../../../models";
 import { MemberCard } from "./card/card";
 import { Paginator } from "../../../ui/paginator/paginator";
-import { MemberSearchParams } from "../../../models/member";
 import { FilterModal } from "../../../ui/filter-modal/filter-modal";
 import { LoadingService } from "../../../core/services/loading.service";
 
@@ -35,8 +34,8 @@ export class MemberList implements OnInit {
         this.getMembers();
     }
     
-    handlePageChange(event : {currentPage:number, pageSize:number}){
-        this.memberSearchParams.currentPage = event.currentPage;
+    handlePageChange(event : {pageIndex:number, pageSize:number}){
+        this.memberSearchParams.pageIndex = event.pageIndex;
         this.memberSearchParams.pageSize = event.pageSize;
         this.memberTextSearchParams = {...this.memberSearchParams};
         this.getMembers();

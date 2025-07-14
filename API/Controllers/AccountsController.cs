@@ -61,6 +61,11 @@ public class AccountsController(AppDbContext context, ITokenService tokenService
         return user.ToDto(tokenService);
     }
 
+    [HttpPost("logout")]
+    public void Logout()
+    {
+    }
+
     private async Task<bool> EmailExists(string email)
     {
         return await context.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower());

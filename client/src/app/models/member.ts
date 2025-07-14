@@ -15,19 +15,23 @@ export type Member = {
 
 export class MemberSearchParams {
     
-    constructor (currentPage:number, pageSize:number, name:string = "", gender?:Gender) {
-        this.currentPage = currentPage;
+    constructor (pageIndex:number, pageSize:number, gender?:Gender) {
+        this.pageIndex = pageIndex;
         this.pageSize = pageSize;
-        this.name = name;
         this.gender = gender;
-        this.orderBy = "displayName"
+        this.orderBy = "displayName";
     }
     
     gender?: Gender
     minAge = 18
     maxAge = 100
-    currentPage = 0;
+    pageIndex = 0;
     pageSize = 10;
-    name = "";
     orderBy = "";
+}
+
+export class MemberLikesSearchParams {
+    pageIndex = 0;
+    pageSize = 10;
+    predicate:"liked"|"likedBy"|"mutual" = "likedBy";
 }

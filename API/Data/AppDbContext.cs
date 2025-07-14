@@ -7,12 +7,34 @@ namespace API.Data;
 public class AppDbContext(DbContextOptions options):DbContext(options)
 {
     public DbSet<AppUser> Users { get; set; }
+    
     public DbSet<Member> Members { get; set; }
+    
     public DbSet<Photo> Photos { get; set; }
 
+    public DbSet<MemberLike> MemberLikes { get; set; }
+    
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<MemberLike>()
+            .HasKey(ml => new { ml.SourceMemberId, ml.TargetMemberId });
+
+        modelBuilder.Entity<MemberLike>()
+            .HasOne(s => s.SourceMember)
+            .WithMany(t => t.LikedMembers)
+            .HasForeignKey(s => s.SourceMemberId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<MemberLike>()
+            .HasOne(s => s.TargetMember)
+            .WithMany(t => t.LikedByMembers)
+            .HasForeignKey(s => s.TargetMemberId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        
         var datetimeConverter = new ValueConverter<DateTime, DateTime>(
             v => v.ToUniversalTime(),
             v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
@@ -28,6 +50,5 @@ public class AppDbContext(DbContextOptions options):DbContext(options)
                 }
             }
         }
-        
     }
 }

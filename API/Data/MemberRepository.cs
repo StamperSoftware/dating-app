@@ -44,7 +44,7 @@ public class MemberRepository(AppDbContext context):IMemberRepository
         };
         
         
-        return await PaginationHelper.CreateAsync(query, memberParams.PageIndex, memberParams.pageSize);
+        return await PaginationHelper.CreateAsync(query, memberParams.PageIndex, memberParams.PageSize);
     }
 
     public async Task<IReadOnlyList<Photo>> GetMemberPhotosAsync(string memberId)

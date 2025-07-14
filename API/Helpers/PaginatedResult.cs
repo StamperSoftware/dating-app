@@ -20,7 +20,7 @@ public static class PaginationHelper
         {
             Metadata = new PaginationMetadata
             {
-                CurrentPage = pageIndex,
+                PageIndex = pageIndex,
                 TotalCount = count,
                 TotalPages = (int)Math.Ceiling(count / (double)pageSize),
                 PageSize = pageSize,
@@ -32,7 +32,7 @@ public static class PaginationHelper
 
 public class PaginationMetadata
 {
-    public int CurrentPage { get; set; }
+    public int PageIndex { get; set; }
     public int TotalPages { get; set; }
     public int PageSize { get; set; }
     public int TotalCount { get; set; }

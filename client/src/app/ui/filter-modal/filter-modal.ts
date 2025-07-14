@@ -1,5 +1,5 @@
 import { Component, ElementRef, input, output, ViewChild } from '@angular/core';
-import { MemberSearchParams } from "../../models/member";
+import { MemberSearchParams } from "../../models";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @Component({

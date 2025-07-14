@@ -1,9 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Member, PaginatedResults, PaginationParams, Photo, UpdateMemberDto } from "../../models";
+import { Member, PaginatedResults, MemberSearchParams, Photo, UpdateMemberDto } from "../../models";
 import { environment } from "../../../environments/environment";
 import { tap } from 'rxjs';
-import { MemberSearchParams } from "../../models/member";
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +25,8 @@ export class MemberService {
   getMembers(memberSearchParams:MemberSearchParams){
     
     let params = new HttpParams().appendAll({
-      pageIndex: memberSearchParams.currentPage,
+      pageIndex: memberSearchParams.pageIndex,
       pageSize: memberSearchParams.pageSize,
-      name: memberSearchParams.name,
       minAge: memberSearchParams.minAge,
       maxAge:memberSearchParams.maxAge,
       orderBy:memberSearchParams.orderBy,

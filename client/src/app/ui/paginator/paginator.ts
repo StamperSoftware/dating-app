@@ -9,13 +9,13 @@ import { PaginationParams } from "../../models";
 })
 export class Paginator {
   
-    currentPage = model(0);
+    pageIndex = model(0);
     pageSize = model(5);
     totalCount = input(0);
     pageSizeOptions = input([3, 5,10,25,50]);
     
     lastItemIndex = computed(()=>{
-      return Math.min((this.currentPage()+1)*this.pageSize(), this.totalCount());
+      return Math.min((this.pageIndex()+1)*this.pageSize(), this.totalCount());
     });
     
     pageChange = output<PaginationParams>({});
@@ -23,7 +23,7 @@ export class Paginator {
     onPageChange(newPage?:number, pageSize?:EventTarget|null){
       
       if (newPage != undefined) {
-        this.currentPage.set(newPage);
+        this.pageIndex.set(newPage);
       }
       
       if (pageSize) {
@@ -32,7 +32,7 @@ export class Paginator {
       }
       
       this.pageChange.emit({
-        currentPage:this.currentPage(),
+        pageIndex:this.pageIndex(),
         pageSize:this.pageSize()
       });
     }

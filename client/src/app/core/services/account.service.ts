@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { LoginDto, RegisterDto, User } from "../../models";
 import { tap } from "rxjs";
 import { environment } from "../../../environments/environment";
+import { MemberLikesService } from "./member-likes.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,22 +12,29 @@ export class AccountService {
   
   private http = inject(HttpClient);
   private url = `${environment.apiUrl}/accounts`
+  private memberLikesService = inject(MemberLikesService);
   
   currentUser = signal<User|null>(null);
   
   login(loginDto:LoginDto){
-    return this.http.post<User>(`${this.url}/login`, loginDto).pipe(tap((user) => this.setCurrentUser(user)));
+    return this.http
+        .post<User>(`${this.url}/login`, loginDto)
+        .pipe(
+          tap((user) => this.setCurrentUser(user))
+        );  
   }
   
   logout(){
-    this.setCurrentUser(null);
-    localStorage.removeItem('filters');
-    return this.http.post(`${this.url}/logout`, {}).pipe(
-        tap(() => {
-          localStorage.removeItem('filters');
-          this.setCurrentUser(null);
-        })
-    );
+    
+    return this.http 
+        .post(`${this.url}/logout`, {})
+        .pipe(
+            tap(() => {
+              this.memberLikesService.clearLikeIds();
+              localStorage.removeItem('filters');
+              this.setCurrentUser(null);
+            })
+        );
   }
   
   register(registerDto:RegisterDto){
@@ -42,6 +50,7 @@ export class AccountService {
     
     localStorage.setItem("user", JSON.stringify(user));
     this.currentUser.set(user);
+    this.memberLikesService.getLikeIds();
   }  
 }
 

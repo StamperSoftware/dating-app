@@ -10,13 +10,24 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   const loadingService = inject(LoadingService);
   
   const generateCacheKey = (url:string, params:HttpParams) => params.keys().reduce((prev, cur) => `${prev}&${cur}=${params.get(cur)}`, `${url}?`);
-  
+  const invalidateCache = (urlPattern:string) =>{
+      
+    for (const key of cache.keys()){
+       if (key.includes(urlPattern)) {
+           cache.delete(key);
+       }
+    }
+  }
+    
   const cacheKey = generateCacheKey(req.url, req.params);
   
   if (req.method === "GET"){
       const cachedResponse = cache.get(cacheKey);
-      console.log(cachedResponse)
       //if (cachedResponse) return of(cachedResponse)
+  }
+  
+  if (req.method.includes("POST") && req.url.includes("/likes")){
+      invalidateCache("/likes");
   }
   
   loadingService.loading();

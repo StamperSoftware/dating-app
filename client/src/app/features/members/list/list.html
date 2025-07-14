@@ -1,9 +1,10 @@
 <div>
-    @if (loadingService.requestCount()) {
+    @if (loadingService.requestCount() && !members().length) {
         
-    } @else if (!members().length) { 
-        <div>There are no members</div>
     } @else {
+        
+        <app-filter-modal #filterModal (submitData)="handleFilterChange($event)" (closeModal)="closeModal()" [memberParams]="memberTextSearchParams"/>
+        
         <div class="flex flex-col gap-3">
             <div class="flex justify-between gap-5">
                 <div class="flex gap-5">
@@ -17,23 +18,24 @@
                 
                 @if (paginationMetadata(); as metadata){
                     <app-paginator
-                        [(currentPage)]="metadata.currentPage"
+                        [(pageIndex)]="metadata.pageIndex"
                         [(pageSize)]="metadata.pageSize"
                         [totalCount]="metadata.totalCount"
-                        (pageChange)="handlePageChange({currentPage:$event.currentPage, pageSize:$event.pageSize})"
+                        (pageChange)="handlePageChange({pageIndex:$event.pageIndex, pageSize:$event.pageSize})"
                     />
                 }
+            </div>
                 
-            </div>
-            
-            <div class="grid grid-cols-5 gap-6">
-                @for (member of members(); track member.id) {
-                    <app-member-card [member]="member"/>
-                }
-            </div>
+            @if (!members().length) { 
+                <div>There are no members</div>
+            } @else {
+                <div class="grid grid-cols-5 gap-6">
+                    @for (member of members(); track member.id) {
+                        <app-member-card [member]="member"/>
+                    }
+                </div>
+            }
         </div>
-        
-        <app-filter-modal #filterModal (submitData)="handleFilterChange($event)" (closeModal)="closeModal()" [memberParams]="memberTextSearchParams"/>
     }
 </div>
     

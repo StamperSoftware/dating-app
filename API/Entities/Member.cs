@@ -23,5 +23,13 @@ public class Member
     [JsonIgnore]
     public IList<Photo> Photos { get; set; } = [];
 
+    [JsonIgnore]
+    public IList<MemberLike> LikedByMembers { get; set; } = [];
+    
+    [JsonIgnore]
+    public IList<MemberLike> LikedMembers { get; set; } = [];
+
+
+
 }
     

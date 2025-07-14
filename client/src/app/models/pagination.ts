@@ -4,12 +4,12 @@
 }
 
 export type PaginationParams = {
-    currentPage:number
+    pageIndex:number
     pageSize:number
 }
 
 export type PaginationMetadata = {
-    currentPage:number
+    pageIndex:number
     pageSize:number
     totalCount:number
 }
