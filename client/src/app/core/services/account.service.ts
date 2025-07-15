@@ -9,18 +9,22 @@ import { MemberLikesService } from "./member-likes.service";
   providedIn: 'root'
 })
 export class AccountService {
-  
+    
   private http = inject(HttpClient);
   private url = `${environment.apiUrl}/accounts`
   private memberLikesService = inject(MemberLikesService);
   
   currentUser = signal<User|null>(null);
+  interval:number = 0;
   
   login(loginDto:LoginDto){
     return this.http
-        .post<User>(`${this.url}/login`, loginDto)
+        .post<User>(`${this.url}/login`, loginDto, {withCredentials:true})
         .pipe(
-          tap((user) => this.setCurrentUser(user))
+          tap((user) => {
+              this.setCurrentUser(user);
+              this.startTokenRefreshInterval();
+          })
         );  
   }
   
@@ -33,24 +37,57 @@ export class AccountService {
               this.memberLikesService.clearLikeIds();
               localStorage.removeItem('filters');
               this.setCurrentUser(null);
+              clearInterval(this.interval);
             })
         );
   }
+
+    register(registerDto:RegisterDto){
+        return this.http.post<User>(`${this.url}/register`,registerDto, {withCredentials:true})
+            .pipe(tap(user => {
+                this.setCurrentUser(user);
+                this.startTokenRefreshInterval();
+            }));
+    }
+    
+    private getRolesFromToken(user:User):string[]{
+      const payload = user.token.split('.')[1];
+      const decoded = atob(payload);
+      const jsonPayload = JSON.parse(decoded);
+    
+      return Array.isArray(jsonPayload.role) ? jsonPayload.role : [jsonPayload.role];
+    }
   
-  register(registerDto:RegisterDto){
-    return this.http.post<User>(`${this.url}/register`,registerDto).pipe(tap(user=>this.setCurrentUser(user)));
-  } 
+  refreshToken(){
+      return this.http.post<User>(`${this.url}/refresh-token`, {}, {withCredentials:true})
+  }
+  
+  startTokenRefreshInterval(){
+      this.interval = setInterval(()=>{
+        this.http.post<User>(`${this.url}/refresh-token`, {}, {withCredentials:true}).subscribe({
+            next: (user) => this.setCurrentUser(user),
+            error: ()=> this.logout(),
+        })
+      }, 5000)
+  }
+
   
   setCurrentUser(user:User|null){
     if (!user) {
-      localStorage.removeItem('user');
       this.currentUser.set(null);
       return;
     }
     
-    localStorage.setItem("user", JSON.stringify(user));
+    user.roles = this.getRolesFromToken(user);
     this.currentUser.set(user);
     this.memberLikesService.getLikeIds();
   }  
+    
+  doesUserHaveRole(role:string){
+      const user = this.currentUser();
+      if (!user) return false;
+      return user.roles.includes(role);
+  }
+  
 }
 

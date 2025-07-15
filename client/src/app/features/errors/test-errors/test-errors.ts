@@ -21,24 +21,35 @@ export class TestErrors {
       error:(err) => {},
     })
   }
+  
   getUnauthorizedError(){
     return this.http.get(`${this.url}/unauthorized`).subscribe({
       next:()=>{},
       error:(err) => { },
     })
   }
+  
   getBadRequestError(){
     return this.http.get(`${this.url}/bad-request`).subscribe({
       next:()=>{},
       error:(err) => {},
     })
   }
+  
   getServerError(){
     return this.http.get(`${this.url}/server-error`).subscribe({
       next:()=>{},
       error:(err) => {},
     })
   }
+  
+  getUnauthorizedRoleError(){
+    return this.http.get(`${this.url}/roles`).subscribe({
+      next:()=>{},
+      error:(err) => {},
+    })
+  }
+  
   getValidationError(){
     return this.http.post(`${this.accountsUrl}/register`, {}).subscribe({
       next:()=>{},

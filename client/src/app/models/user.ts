@@ -4,4 +4,5 @@
     email:string
     token:string
     imageUrl?:string
+    roles:string[]
 }

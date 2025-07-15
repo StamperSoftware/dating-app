@@ -1,0 +1,23 @@
+<div class="flex flex-col w-full mb-3">
+    <div class="flex justify-between items-center">
+        <div class="tabs tabs-border tabs-lg text-primary">
+            @for (tab of tabs; track $index){
+                <button class="tab"
+                    [hidden]="tab.value === 'users' && !accountService.doesUserHaveRole('Admin')"
+                    [class.tab-active]="activeTab === tab.value"
+                    (click)="setTab(tab.value)"
+                >
+                    {{tab.value}}
+                </button>
+            }
+        </div>
+    </div>
+    
+    @if(activeTab === 'users'){
+        <app-user-management/>
+    }
+    @if(activeTab === 'photos'){
+        <app-photo-management/>
+    }
+    
+</div>

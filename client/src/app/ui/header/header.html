@@ -7,21 +7,25 @@
                 <a routerLink="/members" routerLinkActive="text-accent" [routerLinkActiveOptions]="{exact:true}" >Members</a>
                 <a routerLink="/matches" routerLinkActive="text-accent">Matches</a>
                 <a routerLink="/messages" routerLinkActive="text-accent">Messages</a>
+                @if (accountService.doesUserHaveRole("Admin") || accountService.doesUserHaveRole("Moderator")) {
+                    <a routerLink="/admin" routerLinkActive="text-accent">Admin</a>
+                }
             }
+            @if (loadingService.requestCount() > 0){
+                <span class="loading loading-spinner text-accent"></span>
+            } 
+            
         </nav>
         
-        @if (loadingService.requestCount() > 0){
-            <span class="loading loading-spinner text-accent"></span>
-        } 
-        
         <div class="flex align-middle ml-auto gap-3">
+            
             <div class="dropdown dropdown-end mr-1">
                 <button tabindex="0" class="btn m-1 flex flex-col justify-center align-middle cursor-pointer uppercase text-xs">
                     {{selectedTheme()}}
                 </button>
-                <ul tabindex="0" class="dropdown-content bg-base-300 cursor-pointer p-3">
+                <ul tabindex="0" class="dropdown-content bg-base-200 p-3">
                     @for (theme of themes;track $index) {
-                        <li (click)="handleSelectedTheme(theme)" class="hover:bg-base-100"><a>{{theme}}</a></li>
+                        <li (click)="handleSelectedTheme(theme)" class="hover:bg-base-100 cursor-pointer p-1">{{theme}}</li>
                     }
                 </ul>
             </div>
@@ -32,15 +36,15 @@
                         <img ngSrc="{{user.imageUrl ?? '/user.png'}}" alt="user" class="w-8 h-8 rounded-full" height="450" width="450">
                         <span>{{user.displayName}}</span>
                     </div>
-                    <ul tabindex="0" class="dropdown-content menu">
-                        <li><button class="btn" routerLink="/members/{{user.id}}/profile">Edit Profile</button></li>
-                        <li><button class="btn" (click)="logout()">Logout</button></li>
+                    <ul tabindex="0" class="dropdown-content bg-base-200 p-3 flex flex-col gap-2">
+                        <li (click)="logout()" class="hover:bg-base-100 cursor-pointer p-1"><a routerLink="/members/{{user.id}}/profile">Profile</a></li>
+                        <li (click)="logout()" class="hover:bg-base-100 cursor-pointer p-1">Logout</li>
                     </ul>
                     
                 </div>
             }
             @else {
-                <form (ngSubmit)="login()" class="flex items-center gap-3">
+                <form (ngSubmit)="login()" class="flex items-center gap-2">
                     <input name="email" [(ngModel)]="creds.email" type="text" class="input" placeholder="Email">
                     <input name="password" [(ngModel)]="creds.password" type="password" class="input" placeholder="Password">
                     <button class="btn" type="submit">Login</button>

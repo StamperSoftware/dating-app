@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
@@ -26,5 +28,12 @@ public class ErrorsController:BaseController
     public IActionResult GetBadRequest()
     {
         return BadRequest("Example of Bad Request");
+    }
+    
+    [Authorize(Roles="Admin")]
+    [HttpGet("roles")]
+    public IActionResult GetUnauthorizedRole()
+    {
+        return Ok();
     }
 }
