@@ -68,7 +68,7 @@ export class AccountService {
             next: (user) => this.setCurrentUser(user),
             error: ()=> this.logout(),
         })
-      }, 5000)
+      }, 5000 * 60)
   }
 
   
