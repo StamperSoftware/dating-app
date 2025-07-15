@@ -28,7 +28,7 @@
             @if (accountService.currentUser(); as user) {
                 <div class="dropdown dropdown-end">
                     
-                    <div tabindex="0" role="button"  class="cursor-pointer">
+                    <div tabindex="0" role="button"  class="cursor-pointer flex flex-col items-center">
                         <img ngSrc="{{user.imageUrl ?? '/user.png'}}" alt="user" class="w-8 h-8 rounded-full" height="450" width="450">
                         <span>{{user.displayName}}</span>
                     </div>

@@ -40,9 +40,31 @@ public class MessagesController(IMessageRepository repo, IMemberRepository membe
     }
 
     [HttpGet("thread/{recipientId}")]
-    public async Task<ActionResult<PaginatedResult<MessageDto>>> GetMessageThread(string recipientId)
+    public async Task<ActionResult<PaginatedResult<MessageDto>>> GetMessageThread(string recipientId)   
     {
         return Ok(await repo.GetMessageThread(User.GetMemberId(), recipientId));
+    }
+
+
+    [HttpDelete("{messageId}")]
+    public async Task<ActionResult> DeleteMessage(string messageId)
+    {
+        var memberId = User.GetMemberId();
+        var message = await repo.GetMessage(messageId);
+        
+        if (message == null) return BadRequest("Could not get message");
+        if (memberId != message.SenderId && memberId != message.RecipientId) return BadRequest("Could not delete message");
+        
+        if (memberId == message.SenderId) message.HasSenderDeleted = true;
+        if (memberId == message.RecipientId) message.HasRecipientDeleted = true;
+
+        if (message is { HasSenderDeleted: true, HasRecipientDeleted: true })
+        {
+            repo.DeleteMessage(message);
+        }
+        
+        if (await repo.SaveAllAsync()) return Ok();
+        return BadRequest("Could not delete message");
     }
     
 }

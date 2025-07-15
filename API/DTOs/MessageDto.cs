@@ -9,8 +9,8 @@ public class MessageDto
     public string? SenderImageUrl { get; set; }
     
     public required string RecipientId { get; set; }
-    public required string ReipientcDisplayName { get; set; }
-    public string? ReceiverImageUrl { get; set; }
+    public required string RecipientDisplayName { get; set; }
+    public string? RecipientImageUrl { get; set; }
     
     public required string Content { get; set; }
     public DateTime? DateRead { get; set; }

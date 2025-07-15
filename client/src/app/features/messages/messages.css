@@ -1,0 +1,6 @@
+table tr:last-child td:first-child {
+    border-radius: 0 0 0 var(--radius-box);
+}
+table tr:last-child td:last-child {
+    border-radius: 0 0 var(--radius-box) 0;
+}

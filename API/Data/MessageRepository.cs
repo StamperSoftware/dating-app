@@ -30,8 +30,8 @@ public class MessageRepository(AppDbContext context):IMessageRepository
 
         query = messageParams.Container switch
         {
-            "outbox" => query.Where(m => m.SenderId == messageParams.MemberId),
-            "inbox" => query.Where(m => m.RecipientId == messageParams.MemberId),
+            "outbox" => query.Where(m => m.SenderId == messageParams.MemberId && !m.HasSenderDeleted),
+            "inbox" => query.Where(m => m.RecipientId == messageParams.MemberId && !m.HasRecipientDeleted),
             _ => throw new Exception("not supported"),
         };
 
@@ -48,8 +48,7 @@ public class MessageRepository(AppDbContext context):IMessageRepository
             .ExecuteUpdateAsync(setters => setters.SetProperty(m => m.DateRead, DateTime.UtcNow));
 
         return await context.Messages
-            .Where(m => (m.RecipientId == currentMemberId && m.SenderId == recipientId) ||
-                        (m.SenderId == currentMemberId && m.RecipientId == recipientId))
+            .Where(m => (m.RecipientId == currentMemberId && m.SenderId == recipientId && !m.HasRecipientDeleted) || (m.SenderId == currentMemberId && m.RecipientId == recipientId && !m.HasSenderDeleted))
             .OrderBy(m => m.MessageSent)
             .Select(MessageExtensions.SelectDto())
             .ToListAsync();

@@ -13,8 +13,12 @@ public static class MessageExtensions
             Id = message.Id,
             SenderId = message.SenderId,
             SenderDisplayName = message.Sender.DisplayName,
+            SenderImageUrl = message.Sender.ImageUrl,
             RecipientId = message.RecipientId,
-            ReipientcDisplayName = message.Recipient.DisplayName,
+            RecipientDisplayName = message.Recipient.DisplayName,
+            RecipientImageUrl = message.Recipient.ImageUrl,
+            MessageSent = message.MessageSent,
+            DateRead = message.DateRead,
             Content = message.Content,
         };
     }
@@ -26,9 +30,14 @@ public static class MessageExtensions
             Id = message.Id,
             SenderId = message.SenderId,
             SenderDisplayName = message.Sender.DisplayName,
+            SenderImageUrl = message.Sender.ImageUrl,
             RecipientId = message.RecipientId,
-            ReipientcDisplayName = message.Recipient.DisplayName,
+            RecipientDisplayName = message.Recipient.DisplayName,
+            RecipientImageUrl = message.Recipient.ImageUrl,
             Content = message.Content,
+            MessageSent = message.MessageSent,
+            DateRead = message.DateRead,
         };
+        
     }
 }
