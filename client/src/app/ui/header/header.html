@@ -36,8 +36,8 @@
                         <img ngSrc="{{user.imageUrl ?? '/user.png'}}" alt="user" class="w-8 h-8 rounded-full" height="450" width="450">
                         <span>{{user.displayName}}</span>
                     </div>
-                    <ul tabindex="0" class="dropdown-content bg-base-200 p-3 flex flex-col gap-2">
-                        <li (click)="logout()" class="hover:bg-base-100 cursor-pointer p-1"><a routerLink="/members/{{user.id}}/profile">Profile</a></li>
+                    <ul tabindex="0" class="dropdown-content bg-base-200 p-3 flex flex-col gap-2" (click)="handleSelectUserItem()">
+                        <li class="hover:bg-base-100 cursor-pointer p-1"><a routerLink="/members/{{user.id}}/profile">Profile</a></li>
                         <li (click)="logout()" class="hover:bg-base-100 cursor-pointer p-1">Logout</li>
                     </ul>
                     

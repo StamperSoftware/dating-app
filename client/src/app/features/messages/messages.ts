@@ -6,6 +6,7 @@ import { RouterLink } from "@angular/router";
 import { DatePipe } from "@angular/common";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { ConfirmDialogService } from "../../core/services/confirm-dialog.service";
 
 @Component({
   selector: 'app-messages',
@@ -21,6 +22,8 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 export class Messages implements OnInit {
 
   private messageService = inject(MessageService)
+  private confirmDialogService = inject(ConfirmDialogService);
+  
   protected container = 'inbox';
   protected updatedContainer = this.container;
   protected pageIndex = 0;
@@ -36,9 +39,14 @@ export class Messages implements OnInit {
     this.getMessages();
   }
 
-  deleteMessage(e:Event, messageId:string){
-    e.preventDefault();
+  async confirmDelete(e:Event, id:string){
     e.stopPropagation();
+    const ok = await this.confirmDialogService.confirm("Are you sure you want to delete this message?")
+    if (ok) this.deleteMessage(id);
+  }
+  
+  deleteMessage(messageId:string){
+    
     this.messageService.deleteMessage(messageId).subscribe({
       
       next:()=> {

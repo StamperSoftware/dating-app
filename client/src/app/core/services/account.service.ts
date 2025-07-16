@@ -34,7 +34,7 @@ export class AccountService {
   logout(){
     
     return this.http 
-        .post(`${this.url}/logout`, {})
+        .post(`${this.url}/logout`, {}, {withCredentials:true})
         .pipe(
             tap(() => {
               this.memberLikesService.clearLikeIds();

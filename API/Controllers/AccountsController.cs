@@ -5,6 +5,7 @@ using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -88,9 +89,13 @@ public class AccountsController(UserManager<AppUser> userManager, ITokenService 
         
     }
     
+    [Authorize]
     [HttpPost("logout")]
-    public void Logout()
+    public async Task Logout()
     {
+        await userManager.Users.Where(u => u.Id == User.GetMemberId())
+            .ExecuteUpdateAsync(setter => setter.SetProperty(u => u.RefreshTokenExpirationDate, _ => null).SetProperty(u => u.RefreshToken, _ => null));
+        Response.Cookies.Delete("refreshToken");
     }
 
     private async Task SetRefreshTokenCookie(AppUser user)

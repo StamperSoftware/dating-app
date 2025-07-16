@@ -55,7 +55,7 @@
                                    
                                     <td class="w-6/10">{{message.content}}</td>
                                     <td class="w-2/10">{{message.messageSent | date: "medium"}}</td>
-                                    <td class="w-1/10"><fa-icon class="float-end btn btn-circle btn-ghost" (click)="deleteMessage($event, message.id)" [icon]="faTrash"></fa-icon></td>
+                                    <td class="w-1/10"><fa-icon class="float-end btn btn-circle btn-ghost" (click)="confirmDelete($event, message.id)" [icon]="faTrash"></fa-icon></td>
                                 </tr>
                             }
                         

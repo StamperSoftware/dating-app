@@ -43,17 +43,31 @@ export class Header implements OnInit {
     elem?.blur();
   }  
   
+  handleSelectUserItem() {
+    const elem = document.activeElement as HTMLDivElement;
+    elem?.blur();
+  }  
+  
   login(){
+    this.loadingService.loading();
     this.accountService.login(this.creds).subscribe({
-      next:()=>{this.router.navigateByUrl('/');},
+      next:()=>{
+        this.loadingService.idle();
+        this.router.navigateByUrl('/');
+      },
       error:(err)=>{this.toastService.error(err.error);},
+      complete:()=> this.loadingService.idle(),
     });
   }
   
   logout(){
     this.creds = {email: "", password: ""}
+    this.loadingService.loading();
     this.accountService.logout().subscribe({
-      next:()=>{this.router.navigateByUrl('/')},
+      next:()=>{
+        this.loadingService.idle();
+        this.router.navigateByUrl('/');
+      },
       error:(err)=>{this.toastService.error(err.error);},
     });
   }

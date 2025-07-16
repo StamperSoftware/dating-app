@@ -5,6 +5,8 @@
             <img src="{{member.imageUrl || '/user.png'}}" alt="member image" class="rounded-full mx-10 mt-3 object-cover">
             
             <div class="card-body">
+                
+                
                 <div class="flex flex-col items-center">
                     <div class="flex text-2xl text-primary items-center">
                         {{member.displayName}}, {{member.dateOfBirth | age}}
@@ -16,6 +18,7 @@
                         {{member.city}}, {{member.country}}
                     </div>
                 </div>
+                    
                 <div class="divider"></div>
                 <ul class="menu rounded-box w-full text-xl">
                     <li><a routerLink="profile" routerLinkActive="text-primary">Profile</a></li>
@@ -24,14 +27,26 @@
                 </ul>
             </div>
             <div class="card-actions justify-around gap-2 px-2 mb-3">
-                <button class="btn btn-info">Go Back</button>
-                <button class="btn btn-primary">Like User</button>
+                <button class="btn btn-info" routerLink="/members">Go Back</button>
+                    
             </div>
         </div>
         
         <div class="card bg-base-100 w-3/4 p-6 flex flex-col">
             <div class="flex justify-between">
-                <h3 class="card-title text-3xl text-primary">{{ title() }}</h3>
+                <div class="flex gap-5 items-center">
+                    <h3 class="card-title text-3xl text-primary">
+                        {{ title() }}
+                    </h3>
+                    @if (!isCurrentUser()) {
+                        @if (!isLoading()) {
+                            <fa-icon (click)="handleToggleLike(member.id)" class="cursor-pointer" [title]="hasLiked() ? 'Dislike Member' : 'Like Member'" [icon]="hasLiked() ? faHeart : farHeart"/>
+                        } @else {
+                            <fa-icon [icon]="faSpinner" animation="spin"/>
+                        }
+                    }
+                </div>
+
                 @if (isCurrentUser()){
                     <button class="btn btn-outline btn-primary" (click)="memberService.editMode.set(!memberService.editMode())">{{!memberService.editMode() ? 'Edit' : 'Cancel'}}</button>
                 } 

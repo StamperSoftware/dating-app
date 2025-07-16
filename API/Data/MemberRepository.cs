@@ -13,12 +13,6 @@ public class MemberRepository(AppDbContext context):IMemberRepository
         await context.SaveChangesAsync();
     }
 
-    public async Task<bool> SaveAllAsync()
-    {
-        return await context.SaveChangesAsync() > 0;
-    }
-    
-
     public async Task<PaginatedResult<Member>> GetMembersAsync(MemberParams memberParams)
     {
         var query = context.Members.AsQueryable();
