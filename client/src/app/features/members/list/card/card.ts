@@ -6,6 +6,7 @@ import { MemberLikesService } from "../../../../core/services/member-likes.servi
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as farHeart} from "@fortawesome/free-regular-svg-icons";
+import { PresenceService } from "../../../../core/services/presence.service";
 
 @Component({
   selector: 'app-member-card',
@@ -20,9 +21,11 @@ import { faHeart as farHeart} from "@fortawesome/free-regular-svg-icons";
 export class MemberCard {
   
     private memberLikeService = inject(MemberLikesService);
-  
+    private presenceService = inject(PresenceService);
+    
     member = input.required<Member>();
     protected hasLiked = computed(()=> this.memberLikeService.likeIds().includes(this.member().id));
+    protected isOnline= computed(()=> this.presenceService.onlineUsers().includes(this.member().id));
     
     toggleLike(event:Event) {
         event.preventDefault();

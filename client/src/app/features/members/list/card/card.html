@@ -1,7 +1,9 @@
 @if (member(); as member){
     <div class="card rounded-lg cursor-pointer transition-all duration-300 ease-in-out transform hover:-translate-y-2" routerLink="/members/{{member.id}}">
         <img src="{{member.imageUrl || `/user.png`}}" alt="user image" class="rounded-lg" >
-        
+        @if(isOnline()){
+            <span class="status status-success status-xl absolute top-3 left-3"></span>
+        }
         <button (click)="toggleLike($event)" class="absolute top-1 right-1 btn btn-ghost btn-circle fa-2xl">
             <fa-icon [icon]="hasLiked() ? faHeart : farHeart"/>
         </button>

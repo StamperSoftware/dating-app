@@ -4,6 +4,8 @@ import { LoginDto, RegisterDto, User } from "../../models";
 import { tap } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { MemberLikesService } from "./member-likes.service";
+import { PresenceService } from "./presence.service";
+import { HubConnectionState } from "@microsoft/signalr";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ export class AccountService {
   private http = inject(HttpClient);
   private url = `${environment.apiUrl}/accounts`
   private memberLikesService = inject(MemberLikesService);
+  private presenceService = inject(PresenceService);
   
   currentUser = signal<User|null>(null);
   interval:number = 0;
@@ -70,17 +73,22 @@ export class AccountService {
         })
       }, 5000 * 60)
   }
-
   
   setCurrentUser(user:User|null){
     if (!user) {
       this.currentUser.set(null);
+      this.presenceService.stopHubConnection();
       return;
     }
     
     user.roles = this.getRolesFromToken(user);
     this.currentUser.set(user);
     this.memberLikesService.getLikeIds();
+      
+    if (this.presenceService.hubConnection?.state !== HubConnectionState.Connected){
+       this.presenceService.createHubConnection(user); 
+    }
+    
   }  
     
   doesUserHaveRole(role:string){

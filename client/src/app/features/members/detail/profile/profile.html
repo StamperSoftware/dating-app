@@ -36,7 +36,7 @@
                     <button [disabled]="!editForm.dirty"  type="submit" class="self-end btn btn-success">Submit</button>
                 </form>
             } @else {
-                <div>{{member.description}}</div>       
+                <div>{{member.description || 'No Description...'}}</div>       
             }
         </div>
     }
