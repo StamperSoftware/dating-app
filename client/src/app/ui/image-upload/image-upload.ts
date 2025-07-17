@@ -27,8 +27,8 @@ export class ImageUpload {
     this.isDragging = false;
   }
   onDrop(e:DragEvent){
+    e.preventDefault();
     this.isDragging = false;
-    console.log(e.dataTransfer?.files)
     if (e.dataTransfer?.files?.length) {
       const file = e.dataTransfer.files[0];
       this.previewImage(file);
@@ -38,13 +38,21 @@ export class ImageUpload {
   
   cancelFileUpload(){
     this.uploadFile = null;
-    this.imageSrc.set(null)
+    this.imageSrc.set(null);
   }
   
   handleFileUpload(){
     if (this.uploadFile) {
       this.outputFile.emit(this.uploadFile);
     }
+  }
+  
+  handleFileChange(e:Event) {
+    const inputElement = e.target as HTMLInputElement;
+    const file = inputElement?.files?.[0];
+    if (!file) return;
+    this.previewImage(file);
+    this.uploadFile = file;
   }
   
   private previewImage(file:File){

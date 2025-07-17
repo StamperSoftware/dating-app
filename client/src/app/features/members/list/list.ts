@@ -44,7 +44,6 @@ export class MemberList implements OnInit {
     getMembers(){
         this.memberService.getMembers(this.memberSearchParams).subscribe({
             next : (result) => {
-                console.log(result);
                 this.members.set(result.items);
                 this.paginationMetadata.set(result.metadata);
             },

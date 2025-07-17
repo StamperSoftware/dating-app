@@ -12,7 +12,7 @@ import { UserManagement } from "./user-management/user-management";
   templateUrl: './admin.html',
   styleUrl: './admin.css'
 })
-export class Admin implements OnInit{
+export class Admin {
   
   protected accountService = inject(AccountService);
   
@@ -22,10 +22,6 @@ export class Admin implements OnInit{
   ]
   
   activeTab = 'photos';
-  
-  ngOnInit(): void {
-   console.log(this.accountService.currentUser()?.roles) 
-  }
 
   setTab(tab:string){
     this.activeTab = tab;
