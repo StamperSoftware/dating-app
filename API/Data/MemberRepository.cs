@@ -43,7 +43,7 @@ public class MemberRepository(AppDbContext context):IMemberRepository
 
     public async Task<IReadOnlyList<Photo>> GetMemberPhotosAsync(string memberId)
     {
-        return await context.Members.Where(m => m.Id == memberId).SelectMany(m => m.Photos).ToListAsync();
+        return await context.Members.Where(m => m.Id == memberId).SelectMany(m => m.Photos.Where(p => p.HasBeenApproved)).ToListAsync();
     }
 
     public async Task<Member?> GetMemberAsync(string id)

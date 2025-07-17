@@ -57,11 +57,11 @@ export class MemberService {
     return this.http.post<Photo>(`${this.url}/${memberId}/photos`, formData);
   }
   
-  setMainPhoto(memberId:string, photoId:string){
+  setMainPhoto(memberId:string, photoId:number){
     return this.http.put(`${this.url}/${memberId}/photos/main/${photoId}`, {});
   }
   
-  deletePhoto(memberId:string, photoId:string){
+  deletePhoto(memberId:string, photoId:number){
     return this.http.delete(`${this.url}/${memberId}/photos/${photoId}`);
   }
   

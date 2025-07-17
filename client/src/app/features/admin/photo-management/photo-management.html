@@ -1,1 +1,13 @@
-<p>photo-management works!</p>
+<div class="grid grid-cols-5 gap-3">
+    @for(photo of photos(); track photo.id) {
+        <div class="card">
+            <div class="card-body">
+                <img src="{{photo.url}}" alt="photo">
+                <div class="card-actions absolute top-10 left-10">
+                    <fa-icon class="cursor-pointer btn btn-sm btn-success" [icon]="faThumbsUp" (click)="approvePhoto(photo.id)"/>
+                    <fa-icon class="cursor-pointer btn btn-sm btn-error" [icon]="faThumbsDown" (click)="rejectPhoto(photo.id)"/>
+                </div>
+            </div>
+        </div>
+    }
+</div>

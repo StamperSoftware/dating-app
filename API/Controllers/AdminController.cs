@@ -1,4 +1,6 @@
-﻿using API.Entities;
+﻿using API.Data;
+using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class AdminController(UserManager<AppUser> userManager):BaseController
+public class AdminController(UserManager<AppUser> userManager, AppDbContext context, IPhotoService photoService):BaseController
 {
 
     [Authorize(Policy = "RequireAdminRole")]
@@ -50,8 +52,32 @@ public class AdminController(UserManager<AppUser> userManager):BaseController
     
     [Authorize(Policy = "ModeratePhotoRole")]
     [HttpGet("photos-to-moderate")]
-    public IActionResult GetPhotosForModeration()
+    public async Task<ActionResult<IList<Photo>>> GetPhotosForModeration()
     {
+        return Ok(await context.Photos.Where(p => !p.HasBeenApproved).ToListAsync());
+    }
+
+    [Authorize(Policy = "ModeratePhotoRole")]
+    [HttpPost("approve-photo")]
+    public async Task<ActionResult> ApproveMemberPhoto(int photoId)
+    {
+        var photo = await context.Photos.FindAsync(photoId);
+        if (photo == null) return BadRequest("Could not find photo");
+        photo.HasBeenApproved = true;
+        await context.SaveChangesAsync();
+        return Ok();
+    }
+    
+    [Authorize(Policy = "ModeratePhotoRole")]
+    [HttpPost("reject-photo")]
+    public async Task<ActionResult> RejectMemberPhoto(int photoId)
+    {
+        var photo = await context.Photos.FindAsync(photoId);
+        if (photo?.PublicId == null) return BadRequest("Could not find photo");
+        
+        await photoService.DeletePhotoAsync(photo.PublicId);
+        context.Photos.Remove(photo);
+        await context.SaveChangesAsync();
         return Ok();
     }
     

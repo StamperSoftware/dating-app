@@ -74,13 +74,8 @@ public class MembersController(IUnitOfWork uow, IPhotoService photoService)
             Url = result.SecureUrl.AbsoluteUri,
             PublicId = result.PublicId,
             MemberId = member.Id,
+            HasBeenApproved = false,
         };
-
-        if (member.ImageUrl == null)
-        {
-            member.ImageUrl = photo.Url;
-            member.User.ImageUrl = photo.Url;
-        }
 
         member.Photos.Add(photo);
         
@@ -97,6 +92,7 @@ public class MembersController(IUnitOfWork uow, IPhotoService photoService)
 
         var photo = member.Photos.SingleOrDefault(p => p.Id == photoId);
         if (photo == null) return BadRequest("Could not find photo");
+        if (!photo.HasBeenApproved) return BadRequest("Photo has not been approved");
         if (member.ImageUrl == photo.Url) return Ok();
         member.ImageUrl = photo.Url;
         member.User.ImageUrl = photo.Url;

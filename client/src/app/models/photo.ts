@@ -1,5 +1,5 @@
 ﻿export type Photo = {
-    id:string
+    id:number
     url:string
     publicId:string
     memberId:string
